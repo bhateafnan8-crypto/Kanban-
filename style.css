@@ -1,0 +1,256 @@
+/* style.css */
+
+:root {
+    --orange-primary: #ff6b35;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a0a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Spotlight Effect */
+.spotlight-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+    animation: spotlightShift 15s ease-in-out infinite;
+}
+
+@keyframes spotlightShift {
+    0%, 100% {
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+    }
+    50% {
+        background: 
+            radial-gradient(circle at 30% 40%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 70% 70%, rgba(255, 107, 53, 0.15) 0%, transparent 50%);
+    }
+}
+
+/* Column Tag */
+.column-tag {
+    background: #35d7ff0a;
+    border: 1px solid #35d7ff2c;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    width: fit-content;
+}
+
+/* Column Container */
+.column-container {
+    background: #35d7ff0a;
+    backdrop-filter: blur(20px);
+    border: 1px solid #35d7ff2c;
+    border-radius: 16px;
+    padding: 24px;
+    min-height: 500px;
+    box-shadow: 
+        0 20px 40px rgba(255, 107, 53, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Tasks Container */
+.tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 400px;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+}
+
+.dashed-box {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 46px 70px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+}
+
+/* Priority Filter */
+.priority-filter-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.priority-filter-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: white;
+    padding: 8px 32px 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    min-width: 118px;
+}
+
+.priority-filter-select:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.priority-filter-select:focus {
+    border-color: rgba(255, 107, 53, 0.5);
+}
+
+/* CRITICAL FIX: Dark Theme for Dropdown Options */
+.priority-filter-select option {
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 10px;
+}
+
+.priority-filter-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #d1d5db;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+/* Modal Container */
+.modal-container {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    border-radius: 16px;
+    padding: 32px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Task Card Styling - Add to style.css */
+
+.task-card {
+    background: linear-gradient(135deg, rgba(246, 238, 235, 0.12) 0%, rgba(250, 219, 208, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.584);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 10px 30px rgba(243, 229, 224, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.3s ease;
+}
+
+.task-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: rgba(251, 245, 243, 0.4);
+    box-shadow: 
+        0 15px 40px rgba(255, 255, 255, 0.15),
+        inset 0 0 0 1px rgba(245, 227, 227, 0.12);
+    transform: translateY(-4px);
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.edit-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.delete-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+

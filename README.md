@@ -1,2 +1,2 @@
 # Kanban-
-Kanban board project using html css tailwind and vanilla js
+A simple drag-and-drop Kanban-style task manager built with HTML, Tailwind CSS, and JavaScript.

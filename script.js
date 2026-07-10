@@ -27,19 +27,20 @@
 
 
 // Class Initialize
-class Tasks{
-    constructor(){
+class Tasks {
+    constructor() {
         this.array = []
-        
+
         this.taskNameInput = document.querySelector("#taskName")
         this.taskDescInput = document.querySelector("#taskDesc")
         this.prioritySelectInput = document.querySelector("#prioritySelect")
 
+        
         this.loadFromStorage()
         this.render()
     }
 
-        timeAgo(timestamp) {
+    timeAgo(timestamp) {
         const seconds = Math.floor((Date.now() - timestamp) / 1000);
         if (seconds < 60) return "just now";
         const minutes = Math.floor(seconds / 60);
@@ -52,71 +53,93 @@ class Tasks{
 
     // Data methods
 
-    addTask(){
+    addTask() {
 
         const taskName = this.taskNameInput.value;
         const taskDesc = this.taskDescInput.value;
         const prioritySelect = this.prioritySelectInput.value;
         const prioritySelectText = this.prioritySelectInput.options[this.prioritySelectInput.selectedIndex].text
 
-        const obj = {
-            id : Date.now(),
-            taskName,taskDesc,prioritySelect,prioritySelectText,completed:false,createdAt: Date.now()
+        const newTask = {
+            id: Date.now(),
+            taskName, taskDesc, prioritySelect, prioritySelectText, completed: false, createdAt: Date.now()
 
         }
+
+        this.array.push(newTask);
+        
+        console.log(this.array)
+
+        this.taskNameInput.value = "";
+        this.taskDescInput.value = "";
+        this.prioritySelectInput.value = "";
+        this.prioritySelectInput.selectedIndex = 0;
 
         this.saveToStorage();
         this.render();
     }
-    editTask(id){}
-    deleteTask(id){}
+    editTask(id) { }
+    deleteTask(id) { }
 
 
     // Helper methods
 
-    setFilterTask(){}
-    getFilteredTask(id){}
-    taskstats(){}
-    searchTask(id){}
+    setFilterTask() { }
+    getFilteredTask(id) { }
+    taskstats() { }
+    searchTask(id) { }
 
 
     // Ui methods
 
-    render(){}
-    renderTask(task){}
+    render() { }
+    renderTask(task) { }
 
 
     // Storage methods
 
-    loadFromStorage(){
+    loadFromStorage() {
 
     }
-    saveToStorage(){}
+    saveToStorage() { }
 }
 
 // object initilize and class call
 const user = new Tasks()
 
 
-document.querySelector('#addTaskBtn').addEventListener('click', () => {
-    // modal open karne ka code
+function toggle(){
+     document.querySelector('#addTaskModel').classList.toggle('flex');
+    document.querySelector('#addTaskModel').classList.toggle('hidden');
+}
 
-    document.querySelector('#addTaskModel').classList.toggle('flex');
-        document.querySelector('#addTaskModel').classList.toggle('hidden');
+
+// form open - close event handling
+document.querySelector('#addTaskBtn').addEventListener('click', () => {
+   
+toggle()
+  
 });
 
 document.querySelectorAll('.formCancel').forEach((btn) => {
     btn.addEventListener('click', () => {
-        document.querySelector('#addTaskModel').classList.toggle('flex');
-        document.querySelector('#addTaskModel').classList.toggle('hidden');
+        toggle()
+        
     });
 });
 
-// document.querySelectorAll('.formCancel').addEventListener('click', () => {
-//     // modal open karne ka code
 
-//     document.querySelector(".modal-backdrop").style="display:none"
-// });
+// task save using event handling
+
+document.querySelector("#taskform").addEventListener("submit", (e) => {
+    e.preventDefault()
+    user.addTask()
+  
+    toggle()
+
+})
+
+
 
 setInterval(() => {
     myTaskManager.renderTasks();

@@ -129,7 +129,7 @@
     </div>
 
     <!-- Modal (Hidden) -->
-    <div class="modal-backdrop" style="display: none;">
+    <div class="modal-backdrop hidden" id="addTaskModel" >
         <div class="modal-container">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-white">Add New Task</h2>
@@ -182,7 +182,7 @@
 
                 <div class="flex gap-4 justify-center pt-4">
                     <button type="button"
-                        class=" formCancel border border-gray-600 text-white px-8 py-2 rounded-lg hover:border-gray-400 transition"
+                        class="  border border-gray-600 text-white px-8 py-2 rounded-lg hover:border-gray-400 transition formCancel"
                         id="formCancelbtn">
                         Cancel
                     </button>
@@ -197,7 +197,7 @@
     </div>
 
     <!-- Delete Confirmation Modal (Hidden) -->
-    <div class="modal-backdrop" style="display: none;">
+    <div class="modal-backdrop hidden" id="deleteTaskModel">
         <div class="modal-container max-w-md">
             <div class="text-center">
                 <h2 class="text-2xl font-bold text-white mb-4">Are you sure want to delete this task?</h2>

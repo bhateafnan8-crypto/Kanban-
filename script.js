@@ -101,14 +101,22 @@ const user = new Tasks()
 document.querySelector('#addTaskBtn').addEventListener('click', () => {
     // modal open karne ka code
 
-    document.querySelector(".modal-backdrop").style="display=flex"
+    document.querySelector('#addTaskModel').classList.toggle('flex');
+        document.querySelector('#addTaskModel').classList.toggle('hidden');
 });
 
-document.querySelector('#formCancelbtn').addEventListener('click', () => {
-    // modal open karne ka code
-
-    document.querySelector(".modal-backdrop").style="display=none"
+document.querySelectorAll('.formCancel').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        document.querySelector('#addTaskModel').classList.toggle('flex');
+        document.querySelector('#addTaskModel').classList.toggle('hidden');
+    });
 });
+
+// document.querySelectorAll('.formCancel').addEventListener('click', () => {
+//     // modal open karne ka code
+
+//     document.querySelector(".modal-backdrop").style="display:none"
+// });
 
 setInterval(() => {
     myTaskManager.renderTasks();

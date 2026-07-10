@@ -98,11 +98,18 @@ class Tasks{
 const user = new Tasks()
 
 
-document.getElementById('addTaskBtn').addEventListener('click', () => {
+document.querySelector('#addTaskBtn').addEventListener('click', () => {
     // modal open karne ka code
 
     document.querySelector(".modal-backdrop").style="display=flex"
 });
+
+document.querySelector('#formCancelbtn').addEventListener('click', () => {
+    // modal open karne ka code
+
+    document.querySelector(".modal-backdrop").style="display=none"
+});
+
 setInterval(() => {
     myTaskManager.renderTasks();
 }, 60000);

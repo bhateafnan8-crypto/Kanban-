@@ -5,9 +5,15 @@ class Tasks {
         this.Taskid = null;
         this.Editid = null;
         this.dragElement = null;
+
         this.taskNameInput = document.querySelector("#taskName");
         this.taskDescInput = document.querySelector("#taskDesc");
         this.prioritySelectInput = document.querySelector("#prioritySelect");
+
+        this.justadd = document.querySelector("#just-added")
+        this.inprogress = document.querySelector("#in-progress")
+        this.completed = document.querySelector("#completed")
+
 
         this.loadFromStorage();
         this.render();
@@ -24,6 +30,16 @@ class Tasks {
         return `${days} day${days > 1 ? "s" : ""} ago`;
     }
 
+    // Priority -> color mapping (High = Red, Medium = Yellow, Low = Green)
+    getPriorityColor(priority) {
+        const colors = {
+            high: { bar: "from-red-500 to-red-500", text: "text-red-500" },
+            medium: { bar: "from-yellow-500 to-yellow-500", text: "text-yellow-500" },
+            low: { bar: "from-green-500 to-green-500", text: "text-green-500" }
+        };
+        return colors[priority] || colors.low;
+    }
+
     // Data methods
 
     addTask() {
@@ -33,9 +49,7 @@ class Tasks {
         const prioritySelectText =
             this.prioritySelectInput.options[this.prioritySelectInput.selectedIndex]
                 .text;
-        const justadd = document.querySelector("#just-added")
-        const inprogress = document.querySelector("#in-progress")
-        const completed = document.querySelector("#completed")
+
         const newTask = {
             id: Date.now(),
             taskName,
@@ -44,31 +58,21 @@ class Tasks {
             prioritySelectText,
             completed: false,
             createdAt: Date.now(),
-            status: justadd.id
+            status: this.justadd.id
         };
 
         if ((!taskName) || (!taskDesc) || (!prioritySelect)) {
             alert("please fill all details!")
         }
         else {
-
             this.array.push(newTask);
             console.log(this.array);
         }
-
-        // this.array.push(newTask);
-        // console.log(this.array);
 
         this.taskNameInput.value = "";
         this.taskDescInput.value = "";
         this.prioritySelectInput.value = "";
         this.prioritySelectInput.selectedIndex = 0;
-
-        //  if ((this.taskNameInput.value = "") || (this.taskDescInput.value = "") || (this.prioritySelectInput.value = "") ||(this.selectedIndex =0)  ){
-        //     alert("please fill all details!")
-        // }
-
-
 
         this.saveToStorage();
         this.render();
@@ -77,23 +81,16 @@ class Tasks {
         const edit = this.array.find((i) => i.id === id);
 
         if (edit) {
-
             this.taskNameInput.value = edit.taskName;
             this.taskDescInput.value = edit.taskDesc;
             this.prioritySelectInput.value = edit.prioritySelect;
-            // this.prioritySelectInput.selectedIndex = edit.prioritySelect;
-
-
         }
-
 
         this.saveToStorage();
         this.render()
     }
     updateTask(id) {
-        const justadd = document.querySelector("#just-added")
-        const inprogress = document.querySelector("#in-progress")
-        const completed = document.querySelector("#completed")
+
         const edit = this.array.find((i) => i.id === id);
 
         if (edit) {
@@ -106,10 +103,6 @@ class Tasks {
                 edit.prioritySelect = this.prioritySelectInput.value;
                 edit.prioritySelectText = this.prioritySelectInput.options[this.prioritySelectInput.selectedIndex].text
             }
-
-
-
-
         }
         this.taskNameInput.value = "";
         this.taskDescInput.value = "";
@@ -123,57 +116,39 @@ class Tasks {
         this.array = this.array.filter((i) => i.id !== id)
         this.saveToStorage();
         this.render()
-        // console.log(this.array)
     }
-
-
-
 
     // Helper methods
 
-    // setFilterTask() { }
-    getFilteredTask() {
+    filter() {
         const filterVal = document.querySelector(".priority-filter-select").value;
-        if (filterVal !== "") {
-            return this.array.filter((item) => item.prioritySelect === filterVal);
-        }
-        return this.array;
-    }
-
-    searchTask() {
         const searchBarfilter = document.querySelector("#searchBar").value;
-        if (searchBarfilter !== "") {
-            return this.array.filter((item) => item.taskName == searchBarfilter);
-        }
-        return this.array;
-    }
 
+        return this.array.filter((item) => (filterVal === "" || item.prioritySelect === filterVal) && (searchBarfilter === "" || item.taskName.toLowerCase().includes(searchBarfilter.toLowerCase()) || item.taskDesc.toLowerCase().includes(searchBarfilter.toLowerCase())));
+    }
     // Ui methods
 
     render() {
-        const displayTask = this.getFilteredTask(), ;
-        const searchdisplay = this.searchTask()
+        const displayTask = this.filter();
+
         const justaddTasks = displayTask.filter((item) => item.status === "just-added");
         const inprogressTasks = displayTask.filter((item) => item.status === "in-progress");
         const completedTasks = displayTask.filter((item) => item.status === "completed");
-        const justaddBox = document.querySelector("#just-added")
-        const inprogressBox = document.querySelector("#in-progress")
-        const completedBox = document.querySelector("#completed")
 
-        if (!justaddBox) return;
-        if (!inprogressTasks) return;
-        if (!completedBox) return;
+        if (!this.justadd) return;
+        if (!this.inprogress) return;
+        if (!this.completed) return;
 
-        justaddBox.innerHTML = "";
-        inprogressBox.innerHTML = "";
-        completedBox.innerHTML = "";
+        this.justadd.innerHTML = "";
+        this.inprogress.innerHTML = "";
+        this.completed.innerHTML = "";
 
 
         if (displayTask.length === 0) {
             document.getElementById("totalTasks").textContent = "00";
         }
         if (justaddTasks.length === 0) {
-            justaddBox.innerHTML = `
+            this.justadd.innerHTML = `
                                     <div class="empty-state">
                                         <div class="dashed-box">There is no task added</div>
                                     </div>
@@ -184,7 +159,7 @@ class Tasks {
 
         }
         if (inprogressTasks.length === 0) {
-            inprogressBox.innerHTML = `
+            this.inprogress.innerHTML = `
                                     <div class="empty-state">
                                         <div class="dashed-box">There is no task added</div>
                                     </div>
@@ -196,7 +171,7 @@ class Tasks {
 
         }
         if (completedTasks.length === 0) {
-            completedBox.innerHTML = `
+            this.completed.innerHTML = `
                                     <div class="empty-state">
                                         <div class="dashed-box">There is no task added</div>
                                     </div>
@@ -208,22 +183,15 @@ class Tasks {
         }
 
 
-        this.renderTask(justaddTasks, justaddBox)
-        this.renderTask(inprogressTasks, inprogressBox)
-        this.renderTask(completedTasks, completedBox)
+        this.renderTask(justaddTasks, this.justadd)
+        this.renderTask(inprogressTasks, this.inprogress)
+        this.renderTask(completedTasks, this.completed)
 
-        this.taskstats(displayTask)
+        this.taskstats(displayTask, justaddTasks, inprogressTasks, completedTasks)
         this.dragdrop(displayTask)
 
     }
     renderTask(task, column) {
-
-        // const justaddTasks = this.array.filter((item) => item.status === "just-added");
-        // const inprogressTasks = this.array.filter((item) => item.status === "in-progress");
-        // const completedTasks = this.array.filter((item) => item.status === "completed");
-
-
-
 
         function toggle1() {
             document.querySelector("#addTaskModel").classList.toggle("flex");
@@ -232,9 +200,12 @@ class Tasks {
         task.forEach((item) => {
             let rowDiv = document.createElement("div");
             rowDiv.classList.add("tasks")
+
+            const priorityColor = this.getPriorityColor(item.prioritySelect);
+
             rowDiv.innerHTML = `
                             <div class="task-card" draggable="true">
-                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-red-500 to-red-500 rounded-l-lg"></div>
+                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b ${priorityColor.bar} rounded-l-lg"></div>
                 
                                 <div class="flex justify-between items-start gap-4 pl-4"> 
                                     <div class="flex-1">
@@ -249,7 +220,7 @@ class Tasks {
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between pl-4">
-                                    <span class="text-orange-500 text-xs font-semibold">${item.prioritySelectText}</span>
+                                    <span class="${priorityColor.text} text-xs font-semibold">${item.prioritySelectText}</span>
                                     <span class="text-gray-500 text-xs">${this.timeAgo(item.createdAt)}</span>
                                 </div>
                             </div>
@@ -266,28 +237,15 @@ class Tasks {
                 this.editTask(this.Editid)
                 toggle1()
             })
-            // rowDiv.forEach(rowDiv => {
-            //     task.addEventListener("drag",(e) =>{
-            //         this.dragElement = task
-            //     })
-            // })
 
             rowDiv.addEventListener("drag", (e) => {
                 this.dragElement = rowDiv
                 this.Taskid = item.id
             })
         });
-
-        // this.dragdrop(rowDiv)
     }
 
     dragdrop(task) {
-
-        const justadd = document.querySelector("#just-added")
-        const inprogress = document.querySelector("#in-progress")
-        const completed = document.querySelector("#completed")
-
-
 
         const addDrag = (column) => {
             column.addEventListener("dragenter", (e) => {
@@ -315,24 +273,19 @@ class Tasks {
             })
         }
 
-        addDrag(justadd)
-        addDrag(inprogress)
-        addDrag(completed)
-
-        // console.log(task)
+        addDrag(this.justadd)
+        addDrag(this.inprogress)
+        addDrag(this.completed)
     }
 
-    taskstats(data) {
+    taskstats(data, justaddTasks, inprogressTasks, completedTasks) {
         const totalTask = document.getElementById("totalTasks");
+
         const pendingask = document.querySelectorAll(".pendingStats");
         const inprogressTask = document.querySelectorAll(".inprogressStats");
         const completedTask = document.querySelectorAll(".completedStats");
 
-        const justaddTasks = this.array.filter((item) => item.status === "just-added");
-        const inprogressTasks = this.array.filter((item) => item.status === "in-progress");
-        const completedTasks = this.array.filter((item) => item.status === "completed");
-
-        const total = this.array.length
+        const total = data.length
         if (totalTask) totalTask.textContent = total.toString().padStart(2, "0");
 
         const justaddedtotal = justaddTasks.length
@@ -345,7 +298,7 @@ class Tasks {
         count(pendingask, justaddedtotal)
         count(inprogressTask, inrprogresstotal)
         count(completedTask, completedtotal)
-
+        this.saveToStorage()
     }
     // Storage methods
 
@@ -408,18 +361,63 @@ function toggles() {
 }
 
 document.querySelector("#deleteCnacelbtn").addEventListener("click", () => {
-
     toggles()
 })
 document.querySelector("#deleteokbtn").addEventListener("click", () => {
     user.deleteTask(user.Taskid)
     toggles()
 })
+
+// filter event handling
 document.querySelector(".priority-filter-select").addEventListener("change", () => {
-    user.render() // this is for diaply filtered data tasks in ui
+    user.render()
 })
 
+// search event handling
 
+function searchCancleAdd() {
+    document.querySelector("#searchCancel").classList.add("flex");
+    document.querySelector("#searchCancel").classList.remove("hidden");
+}
+
+function searchCancleRemove() {
+    document.querySelector("#searchCancel").classList.remove("flex");
+    document.querySelector("#searchCancel").classList.add("hidden");
+}
+
+function searchFocusRemove() {
+    document.querySelector("#search").classList.add("border-gray-600");
+    document.querySelector("#search").classList.remove("border-gray-100");
+}
+function searchFocusAdd() {
+    document.querySelector("#search").classList.remove("border-gray-600");
+    document.querySelector("#search").classList.add("border-gray-100");
+}
+document.querySelector("#searchBar").addEventListener("input", (e) => {
+    e.preventDefault()
+    user.render()
+    if (e.target.value === "") {
+        searchCancleRemove()
+        searchFocusRemove()
+    }
+    else {
+        searchCancleAdd()
+        searchFocusAdd()
+    }
+})
+
+document.querySelector("#searchCancel").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector("#searchBar").value = "";
+    searchCancleRemove()
+    searchFocusRemove()
+    user.render()
+})
+document.querySelector("#searchbtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    searchFocusRemove()
+    user.render()
+})
 setInterval(() => {
     user.render();
 }, 60000);

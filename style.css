@@ -10,11 +10,15 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 body {
     background-color: #0a0a0a;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: white;
-    overflow-x: hidden;
 }
 
 /* Spotlight Effect */
@@ -187,25 +191,7 @@ body {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-/* .modal-toggle{
-    display: none;
-} */
-
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Task Card Styling - Add to style.css */
+/* Task Card Styling */
 
 .task-card {
     background: linear-gradient(135deg, rgba(246, 238, 235, 0.12) 0%, rgba(250, 219, 208, 0.05) 100%);
@@ -264,4 +250,261 @@ body {
     justify-content: center;
 }
 
+/* ============================= */
+/* Responsive Design             */
+/* ============================= */
 
+/* Kanban grid - force override regardless of Tailwind specificity clash */
+.kanban-grid.grid.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Kanban grid - tablet: 2 columns */
+@media (max-width: 1024px) {
+    .kanban-grid.grid.grid-cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Kanban grid - mobile: 1 column (stacked) */
+@media (max-width: 768px) {
+    .kanban-grid.grid.grid-cols-3 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ============================= */
+/* Header row (title + total + add-btn) */
+/* Fluid sizing: text and controls scale smoothly with viewport   */
+/* width instead of jumping at fixed breakpoints (UX principle:   */
+/* proportional scaling avoids the "too small / too big" jumps).  */
+/* ============================= */
+
+h1.text-5xl {
+    font-size: clamp(1.375rem, 4vw + 0.5rem, 3rem);
+    line-height: 1.15;
+}
+
+.max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center p.text-gray-400 {
+    font-size: clamp(0.6875rem, 1vw + 0.4rem, 0.875rem);
+    margin-top: 2px;
+}
+
+.max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center span#totalTasks,
+.max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center span.text-gray-300 {
+    font-size: clamp(0.75rem, 0.6vw + 0.65rem, 1rem);
+}
+
+#addTaskBtn {
+    font-size: clamp(0.75rem, 0.5vw + 0.65rem, 0.9375rem);
+    padding: clamp(6px, 0.8vw, 8px) clamp(14px, 2vw, 24px);
+    white-space: nowrap;
+}
+
+/* Fluid section padding, replaces desktop py-8 px-6 with proportional scaling */
+.max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center {
+    padding-top: clamp(16px, 3vw, 32px);
+    padding-bottom: clamp(16px, 3vw, 32px);
+    padding-left: clamp(16px, 3vw, 24px);
+    padding-right: clamp(16px, 3vw, 24px);
+    gap: clamp(10px, 2vw, 16px);
+}
+
+/* Tablet: keep same row layout as desktop */
+@media (max-width: 1024px) {
+    .max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center .flex.items-center.gap-6 {
+        gap: 12px;
+        flex-shrink: 0;
+    }
+}
+
+/* Mobile: stack + center everything */
+@media (max-width: 768px) {
+    .max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .max-w-7xl.mx-auto.px-6.py-8.flex.justify-between.items-center .flex.items-center.gap-6 {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 4px;
+    }
+}
+
+/* ============================= */
+/* Stats + Search + Filter row   */
+/* Fluid sizing: labels, numbers, search input and filter select  */
+/* scale smoothly with viewport width instead of jumping between  */
+/* fixed breakpoint values.                                       */
+/* ============================= */
+
+.flex.gap-8 .flex.items-center.gap-2 span {
+    font-size: clamp(0.6875rem, 0.55vw + 0.6rem, 0.875rem);
+}
+
+.flex.gap-8 .flex.items-center.gap-2 span.text-lg {
+    font-size: clamp(0.8125rem, 0.7vw + 0.65rem, 1.125rem);
+}
+
+#searchBar {
+    font-size: clamp(0.6875rem, 0.4vw + 0.6rem, 0.75rem);
+}
+
+#search {
+    padding: clamp(8px, 1vw, 10px) clamp(14px, 1.8vw, 18px);
+    gap: clamp(6px, 0.8vw, 8px);
+}
+
+.priority-filter-select {
+    font-size: clamp(0.75rem, 0.4vw + 0.65rem, 0.8125rem);
+    padding: clamp(8px, 1vw, 10px) clamp(30px, 3.4vw, 36px) clamp(8px, 1vw, 10px) clamp(14px, 1.6vw, 16px);
+    min-width: clamp(120px, 15vw, 150px);
+}
+
+/* Fluid section padding + gaps, replaces desktop py-6 with proportional scaling */
+.max-w-7xl.mx-auto.px-6.py-6 {
+    padding-top: clamp(12px, 2vw, 24px);
+    padding-bottom: clamp(12px, 2vw, 24px);
+    padding-left: clamp(16px, 3vw, 24px);
+    padding-right: clamp(16px, 3vw, 24px);
+}
+
+.max-w-7xl.mx-auto.px-6.py-6 > .flex.justify-between.items-center {
+    row-gap: clamp(8px, 1.4vw, 14px);
+    column-gap: clamp(10px, 2vw, 16px);
+}
+
+.flex.gap-8 {
+    gap: clamp(12px, 2.5vw, 32px);
+}
+
+.flex.gap-4 {
+    gap: clamp(14px, 2.2vw, 24px);
+}
+
+/* Search input scales with its content area instead of a fixed px width,
+   so the placeholder text never gets clipped at any viewport size */
+#search {
+    flex: 0 1 clamp(220px, 30vw, 300px);
+    min-width: 0;
+}
+
+#searchBar {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Tablet: same single-line layout as desktop, just scaled down to fit;
+   search + filter wrap together onto their own line if needed, staying
+   next to the stats the same way desktop does */
+@media (max-width: 1024px) {
+    .max-w-7xl.mx-auto.px-6.py-6 > .flex.justify-between.items-center {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: clamp(16px, 3vw, 22px);
+    }
+
+    .flex.gap-8 {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .flex.gap-8 .flex.items-center.gap-2 {
+        white-space: nowrap;
+        gap: 4px;
+    }
+
+    .flex.gap-4 {
+        flex-wrap: nowrap;
+    }
+}
+
+/* Mobile: center align everything, stats forced into a single line,
+   search bar + filter fit below, all sizes scaled to the viewport */
+@media (max-width: 768px) {
+    .max-w-7xl.mx-auto.px-6.py-6 > .flex.justify-between.items-center {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        row-gap: clamp(14px, 4vw, 20px);
+    }
+
+    /* Force all 3 stats onto a single line, shrinking to fit */
+    .flex.gap-8 {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .flex.gap-8 .flex.items-center.gap-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .flex.gap-8 .flex.items-center.gap-2 span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .flex.gap-4 {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    #search {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .priority-filter-wrap {
+        flex-shrink: 0;
+    }
+}
+
+/* Modal - mobile */
+@media (max-width: 480px) {
+    .modal-container {
+        padding: 20px;
+        max-width: 95%;
+    }
+}
+
+/* Kanban section wrapper - fluid outer padding only (column-container,
+   tasks-container, and everything inside a column stays untouched) */
+.max-w-7xl.mx-auto.px-6.py-8:has(.kanban-grid) {
+    padding-top: clamp(16px, 3vw, 32px);
+    padding-bottom: clamp(16px, 3vw, 32px);
+    padding-left: clamp(16px, 3vw, 24px);
+    padding-right: clamp(16px, 3vw, 24px);
+}
+
+/* Column container - tighten on small screens */
+@media (max-width: 768px) {
+    .column-container {
+        padding: 16px;
+        min-height: auto;
+    }
+}
+
+/* Task card - mobile tweaks */
+@media (max-width: 480px) {
+    .task-card {
+        padding: 12px;
+    }
+}
